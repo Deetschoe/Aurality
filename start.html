@@ -2,23 +2,40 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>My A-Frame Scene</title>
+    <title>Aurality</title>
     <meta name="description" content="A simple A-Frame VR scene">
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 </head>
 <body>
     <script src="addTopTracksToScene.js"></script>
-
+    <script src="preload.js"></script>
     
     <a-scene>
         <a-camera position="0 1.6 0">
             <a-cursor raycaster="objects: .clickable"></a-cursor>
         </a-camera>
 
-        <a-box position="0 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+        <!-- Define the entity for the song cover -->
+        <a-entity id="songCover" class="clickable" geometry="primitive: plane; height: 1; width: 1" material="src: #songCoverTexture" position="0 1 -3"></a-entity>
+
         <a-sky color="#ECECEC"></a-sky>
     </a-scene>
 
+    <audio id="audioPlayer"></audio>
 
+    <script>
+        // Add event listener to play audio when the cursor focuses on the song cover
+        document.querySelector('[raycaster]').addEventListener('mouseenter', function(event) {
+            const intersectedElement = event.detail.intersectedEl;
+            if (intersectedElement.classList.contains('clickable')) {
+                const audioPlayer = document.getElementById('audioPlayer');
+                const previewUrl = intersectedElement.getAttribute('data-preview-url');
+                if (previewUrl) {
+                    audioPlayer.src = previewUrl;
+                    audioPlayer.play();
+                }
+            }
+        });
+    </script>
 </body>
 </html>
