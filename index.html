@@ -31,11 +31,16 @@
     <button id="login-button">Log in with Spotify</button>
     <script>
         document.getElementById('login-button').addEventListener('click', function() {
-            const clientId = '9d029e864e7741849d06d254f4274f7d';
-            const redirectUri = encodeURIComponent('https://aurality.vercel.app/redirect'); // Your redirect URI
-            const scopes = encodeURIComponent('user-read-private user-read-email'); // Permissions your app requires
-            const url = `https://accounts.spotify.com/authorize?response_type=token&client_id=${clientId}&scope=${scopes}&redirect_uri=${redirectUri}`;
-            window.location = url; // Redirect to Spotify login page
+            // Create a silent audio element and play it to unlock audio context
+            var audio = new Audio('bgaud.mp3'); // Use a very short silent audio file
+            audio.play().then(() => {
+                // Only redirect to Spotify login after the audio has been played
+                const clientId = '9d029e864e7741849d06d254f4274f7d';
+                const redirectUri = encodeURIComponent('https://aurality.vercel.app/redirect'); // Your redirect URI
+                const scopes = encodeURIComponent('user-read-private user-read-email'); // Permissions your app requires
+                const url = `https://accounts.spotify.com/authorize?response_type=token&client_id=${clientId}&scope=${scopes}&redirect_uri=${redirectUri}`;
+                window.location = url; // Redirect to Spotify login page
+            }).catch(error => console.error("Audio play failed", error));
         });
     </script>
 </body>
