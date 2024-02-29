@@ -9,43 +9,35 @@ async function fetchTopArtists() {
         });
         const data = await response.json();
         console.log("Top Artists:", data);
-        // Process the retrieved top artists data here
+        // Call function to add top artists to A-Frame scene
+        addTopArtistsToScene(data.items);
     } catch (error) {
-        console.error('Error fetching top tracks:', error);
+        console.error('Error fetching top artists:', error);
     }
 }
 
-// Call fetchTopTracks() and handle the response
-fetchTopTracks().then(tracks => {
-    if (tracks) {
-        addTopTracksToScene(tracks);
-    }
-});
-
-function addTopTracksToScene(tracks) {
+function addTopArtistsToScene(artists) {
     const sceneEl = document.querySelector('a-scene'); // Reference to your A-Frame scene
 
-    // Limit to top 5 tracks
-    tracks.slice(0, 5).forEach((track, index) => {
-        const imageUrl = track.album.images[0].url; // Album cover image URL
-        const previewUrl = track.preview_url; // URL to song preview
+    // Limit to top 5 artists
+    artists.slice(0, 5).forEach((artist, index) => {
+        const imageUrl = artist.images[0].url; // Artist image URL
 
-        // Create an entity for this track
-        const trackEl = document.createElement('a-entity');
-        trackEl.setAttribute('geometry', { primitive: 'plane', height: 1, width: 1 });
-        trackEl.setAttribute('material', { src: imageUrl });
-        trackEl.setAttribute('position', { x: index * 2 - 4, y: 1, z: -3 }); // Adjust positioning as necessary
-        trackEl.setAttribute('class', 'clickable'); // Make it clickable
+        // Create an entity for this artist
+        const artistEl = document.createElement('a-entity');
+        artistEl.setAttribute('geometry', { primitive: 'plane', height: 1, width: 1 });
+        artistEl.setAttribute('material', { src: imageUrl });
+        artistEl.setAttribute('position', { x: index * 2 - 4, y: 1, z: -3 }); // Adjust positioning as necessary
+        artistEl.setAttribute('class', 'clickable'); // Make it clickable
 
         // Add an event listener for the click (tap) event
-        trackEl.addEventListener('click', () => {
-            playPreview(previewUrl);
+        artistEl.addEventListener('click', () => {
+            // Implement functionality to interact with the artist
         });
 
-        sceneEl.appendChild(trackEl); // Add this track entity to the scene
+        sceneEl.appendChild(artistEl); // Add this artist entity to the scene
     });
 }
 
-function playPreview(previewUrl) {
-    // Implementation of playPreview function
-}
+// Call fetchTopArtists() to fetch top artists data
+fetchTopArtists();
