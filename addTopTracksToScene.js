@@ -3,6 +3,7 @@ async function fetchTopTracks() {
     try {
         const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
             method: 'GET',
+            method: 'json',
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
