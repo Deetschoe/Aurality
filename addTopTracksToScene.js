@@ -1,3 +1,17 @@
+// This could be in your redirect page script or a script that runs on application load.
+window.onload = function() {
+    const hash = window.location.hash.substring(1); // Remove '#' from the start
+    const params = new URLSearchParams(hash);
+    const accessToken = params.get('access_token');
+
+    if (accessToken) {
+        localStorage.setItem('access_token', accessToken);
+        console.log('Access token stored.');
+    } else {
+        console.log('Access token not found in URL.');
+    }
+};
+
 async function fetchTopTracks() {
     const accessToken = localStorage.getItem('access_token');
     try {
