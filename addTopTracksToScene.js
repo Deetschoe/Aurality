@@ -66,3 +66,42 @@ function playPreview(previewUrl) {
         }
     }
 }
+
+function addTopTracksToScene(tracks) {
+    console.log("addTopTracksToScene called with tracks:", tracks); // Log the tracks data
+
+    const sceneEl = document.querySelector('a-scene'); // Reference to your A-Frame scene
+
+    if (!sceneEl) {
+        console.error("A-Frame scene element not found.");
+        return;
+    }
+
+    // Limit to top 5 tracks
+    tracks.slice(0, 5).forEach((track, index) => {
+        console.log(`Processing track ${index}:`, track); // Log each track being processed
+
+        const imageUrl = track.album.images[0]?.url; // Album cover image URL
+        const previewUrl = track.preview_url; // URL to song preview
+
+        if (!imageUrl) {
+            console.warn(`Track ${index} does not have an album image.`);
+            return; // Skip this track if it doesn't have an image URL
+        }
+
+        // Create an entity for this track
+        const trackEl = document.createElement('a-entity');
+        trackEl.setAttribute('geometry', { primitive: 'plane', height: 1, width: 1 });
+        trackEl.setAttribute('material', `src: ${imageUrl}`);
+        trackEl.setAttribute('position', { x: index * 2 - 4, y: 1, z: -3 }); // Adjust positioning as necessary
+        trackEl.setAttribute('class', 'clickable'); // Make it clickable
+
+        // Add an event listener for the click (tap) event
+        trackEl.addEventListener('click', () => {
+            console.log(`Playing preview for track ${index}:`, previewUrl); // Log which track preview is being played
+            playPreview(previewUrl);
+        });
+
+        sceneEl.appendChild(trackEl); // Add this track entity to the scene
+    });
+}

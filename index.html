@@ -32,7 +32,7 @@
     <script>
         document.getElementById('login-button').addEventListener('click', function() {
             // Create a silent audio element and play it to unlock audio context
-            var audio = new Audio('bgaud.mp3'); // Use a very short silent audio file
+            var audio = new Audio('start.wav'); // Use a very short silent audio file
             audio.play().then(() => {
                 // Only redirect to Spotify login after the audio has been played
                 const clientId = '9d029e864e7741849d06d254f4274f7d';
