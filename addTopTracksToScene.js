@@ -21,8 +21,10 @@ function addTopTracksToScene(tracks) {
 
     // Limit to top 5 tracks
     tracks.slice(0, 5).forEach((track, index) => {
-        const imageUrl = track.album.images[0].url; // Track album image URL
-        const trackName = track.name; // Track name
+        const imageUrl = track.album.images[0].url; // Album cover image URL
+        const previewUrl = track.preview_url; // URL to song preview
+        const trackName = track.name; // Name of the song
+        const artistName = track.artists[0].name; // Name of the artist
 
         // Create an entity for this track
         const trackEl = document.createElement('a-entity');
@@ -31,15 +33,31 @@ function addTopTracksToScene(tracks) {
         trackEl.setAttribute('position', { x: index * 2 - 4, y: 1, z: -3 }); // Adjust positioning as necessary
         trackEl.setAttribute('class', 'clickable'); // Make it clickable
 
-        // Add text above the track entity indicating "Most listened to song"
-        const textEl = document.createElement('a-text');
-        textEl.setAttribute('value', 'Most listened to song');
-        textEl.setAttribute('align', 'center');
+        // Create text entity to display song name and artist
+        const textEl = document.createElement('a-entity');
+        textEl.setAttribute('text', {
+            value: `${trackName} - ${artistName}`,
+            color: 'white',
+            align: 'center',
+            width: 3
+        });
         textEl.setAttribute('position', { x: index * 2 - 4, y: 2, z: -3 }); // Adjust positioning as necessary
 
+        // Add event listener for playing the preview
+        trackEl.addEventListener('click', () => {
+            playPreview(previewUrl);
+        });
+
         sceneEl.appendChild(trackEl); // Add this track entity to the scene
-        sceneEl.appendChild(textEl); // Add the text entity to the scene
+        sceneEl.appendChild(textEl); // Add text entity above the track
     });
+}
+
+function playPreview(previewUrl) {
+    const audioEl = new Audio(previewUrl);
+    audioEl.play()
+        .then(() => console.log("Audio playback started"))
+        .catch(error => console.error("Audio playback failed", error));
 }
 
 // Call fetchTopTracks() to fetch top tracks data
