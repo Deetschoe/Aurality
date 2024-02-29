@@ -1,19 +1,15 @@
-async function fetchTopTracks() {
-    const accessToken = localStorage.getItem('access_token');
-    if (!accessToken) {
-        console.error('Access Token not found');
-        return;
-    }
-
+async function fetchTopArtists() {
+    const accessToken = '1POdFZRZbvb...qqillRxMr2z'; // Replace with your access token
     try {
-        const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
+        const response = await fetch('https://api.spotify.com/v1/me/top/artists', {
+            method: 'GET',
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         });
         const data = await response.json();
-        console.log("Spotify API data:", data); // Log the Spotify API response
-        return data.items; // Return the top tracks for further processing
+        console.log("Top Artists:", data);
+        // Process the retrieved top artists data here
     } catch (error) {
         console.error('Error fetching top tracks:', error);
     }
