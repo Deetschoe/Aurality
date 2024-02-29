@@ -1,64 +1,58 @@
-async function fetchTopTracks() {
+// Function to preload music previews
+async function preloadMusicPreviews(tracks) {
+    for (const track of tracks) {
+        const previewUrl = track.preview_url;
+        if (previewUrl) {
+            try {
+                const audio = new Audio(previewUrl);
+                // Load the audio file in the background
+                await audio.load();
+                // Once loaded, store the audio element in memory or cache
+                // You can store it in an array or any other data structure for later use
+                // For simplicity, let's store it as a property of the track object
+                track.audio = audio;
+            } catch (error) {
+                console.error('Error preloading music preview:', error);
+            }
+        }
+    }
+}
+
+// Function to play the music preview
+function playPreview(track) {
+    if (track.audio) {
+        track.audio.play();
+    } else {
+        console.error('Music preview not preloaded for track:', track);
+    }
+}
+
+// Fetch top tracks data and preload music previews
+async function fetchTopTracksAndPreload() {
     const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+        console.error('Access Token not found');
+        return;
+    }
+
     try {
         const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
-            method: 'GET',
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         });
         const data = await response.json();
-        console.log("Top Tracks:", data);
-        // Call function to add top tracks to A-Frame scene
-        addTopTracksToScene(data.items);
+        const topTracks = data.items;
+        
+        // Preload music previews in the background
+        await preloadMusicPreviews(topTracks);
+
+        // Once previews are preloaded, add them to the scene or perform any other actions
+        addTopTracksToScene(topTracks);
     } catch (error) {
-        console.error('Error fetching top tracks:', error);
+        console.error('Error fetching or preloading top tracks:', error);
     }
 }
 
-function addTopTracksToScene(tracks) {
-    const sceneEl = document.querySelector('a-scene'); // Reference to your A-Frame scene
-
-    // Limit to top 5 tracks
-    tracks.slice(0, 5).forEach((track, index) => {
-        const imageUrl = track.album.images[0].url; // Album cover image URL
-        const previewUrl = track.preview_url; // URL to song preview
-        const trackName = track.name; // Name of the song
-        const artistName = track.artists[0].name; // Name of the artist
-
-        // Create an entity for this track
-        const trackEl = document.createElement('a-entity');
-        trackEl.setAttribute('geometry', { primitive: 'plane', height: 1, width: 1 });
-        trackEl.setAttribute('material', { src: imageUrl });
-        trackEl.setAttribute('position', { x: index * 2 - 4, y: 1, z: -3 }); // Adjust positioning as necessary
-        trackEl.setAttribute('class', 'clickable'); // Make it clickable
-
-        // Create text entity to display song name and artist
-        const textEl = document.createElement('a-entity');
-        textEl.setAttribute('text', {
-            value: `${trackName} - ${artistName}`,
-            color: 'white',
-            align: 'center',
-            width: 3
-        });
-        textEl.setAttribute('position', { x: index * 2 - 4, y: 2, z: -3 }); // Adjust positioning as necessary
-
-        // Add event listener for playing the preview
-        trackEl.addEventListener('click', () => {
-            playPreview(previewUrl);
-        });
-
-        sceneEl.appendChild(trackEl); // Add this track entity to the scene
-        sceneEl.appendChild(textEl); // Add text entity above the track
-    });
-}
-
-function playPreview(previewUrl) {
-    const audioEl = new Audio(previewUrl);
-    audioEl.play()
-        .then(() => console.log("Audio playback started"))
-        .catch(error => console.error("Audio playback failed", error));
-}
-
-// Call fetchTopTracks() to fetch top tracks data
-fetchTopTracks();
+// Call fetchTopTracksAndPreload() to fetch top tracks data and preload music previews
+fetchTopTracksAndPreload();
