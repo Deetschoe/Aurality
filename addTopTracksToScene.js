@@ -2,9 +2,16 @@ async function fetchTopArtists() {
     const accessToken = localStorage.getItem('access_token');
     try {
         const response = await fetch('https://api.spotify.com/v1/me/top/artists', {
+            url: `${app.apiUrl}/search`,
             method: 'GET',
+            dataType: 'json',
+            data: {
+                q: artistName,
+                type: 'artist'
+        
+            },
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+              "Authorization": `Bearer ${accessToken}`
             }
         });
         const data = await response.json();
