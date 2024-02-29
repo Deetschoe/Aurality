@@ -1,0 +1,6 @@
+{
+    "rewrites": [
+      { "source": "/redirect", "destination": "/redirect.html" }
+    ]
+  }
+  
