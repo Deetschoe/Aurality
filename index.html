@@ -1,25 +1,31 @@
-Skip to content
-
-gmlvvpyhm
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login with Spotify</title>
+    <title>Aurality Log In</title>
+
     <style>
+           h1 {
+            font-size: 32px;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        h1:hover {
+            color: #1DB954; 
+        }
         body {
-            display: flex;
-            justify-content: center;
+            display:flex;
+            justify-content:center;
             align-items: center;
             height: 100vh;
-            background-color: #282828;
-            font-family: Arial, sans-serif;
+            background-color: #242624;
+            font-family:Helvetica, sans-serif, sans-serif;
         }
         #login-button {
             padding: 10px 20px;
             background-color: #1DB954;
             border: none;
+            display:flex;
             border-radius: 20px;
             color: white;
             font-size: 16px;
@@ -31,7 +37,7 @@ gmlvvpyhm
         }
     </style>
 </head>
-<body>
+<br>
     <button id="login-button">Log in with Spotify</button>
     <script>
         document.getElementById('login-button').addEventListener('click', function() {
@@ -47,5 +53,7 @@ gmlvvpyhm
             }).catch(error => console.error("Audio play failed", error));
         });
     </script>
+    <br>
+<h1>Find Out Your Top 5 Most Listened-to Songs in Virtual Reality!<br></h1>
 </body>
 </html>
