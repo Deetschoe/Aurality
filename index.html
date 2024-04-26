@@ -6,14 +6,41 @@
 
     <style>
            h1 {
-            font-size: 32px;
+            font-size: 48px;
+            text-align: center;
             color: #ffffff;
             transition: color 0.3s ease;
+            margin-bottom: 0px;
+        }
+        h2 {
+            font-size: 24px;
+            text-align: center;
+            color: #bbbbbb;
+            transition: color 0.3s ease;
+            margin-bottom: 80px;
+        }
+        #linkcolor{
+            font-size: 16px;
+            text-align: center;
+            color: #b7b7b7;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            text-align: center;
+            color: #b7b7b7;
+            margin-top: 20px;
+        }
+        #linkcolor:hover {
+            color: #1DB954; 
         }
         h1:hover {
             color: #1DB954; 
         }
+       
         body {
+            flex-direction: column;
             display:flex;
             justify-content:center;
             align-items: center;
@@ -22,7 +49,7 @@
             font-family:Helvetica, sans-serif, sans-serif;
         }
         #login-button {
-            padding: 10px 20px;
+            padding: 14px 22px;
             background-color: #1DB954;
             border: none;
             display:flex;
@@ -32,13 +59,13 @@
             cursor: pointer;
             text-transform: uppercase;
         }
+        
         #login-button:hover {
             background-color: #1ed760;
         }
     </style>
 </head>
 <br>
-    <button id="login-button">Log in with Spotify</button>
     <script>
         document.getElementById('login-button').addEventListener('click', function() {
             // Create a silent audio element and play it to unlock audio context
@@ -53,7 +80,9 @@
             }).catch(error => console.error("Audio play failed", error));
         });
     </script>
-    <br>
-<h1>Find Out Your Top 5 Most Listened-to Songs in Virtual Reality!<br></h1>
+   <h1>Aurality</h1>
+<h2>Bring your top 5 songs virtual</h2>
+<button id="login-button">Log in with Spotify</button>
+<p>made with love from <a href="https://twitter.com/DeetSchoe" id="linkcolor" target="_blank">deet</a> <3</p>
 </body>
 </html>
